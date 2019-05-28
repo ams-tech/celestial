@@ -15,7 +15,7 @@ def step_impl(context):
     context.device_node = utils.make_device_node()
 
 
-@when(u'we invoke rootfs device node update')
+@when(u'we invoke celestial_rootfs_install')
 def step_impl(context):
     pass
 
