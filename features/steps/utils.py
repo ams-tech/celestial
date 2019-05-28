@@ -1,4 +1,4 @@
-import os 
+import os
 import subprocess
 import shutil
 from behave import fixture
@@ -34,7 +34,7 @@ def make_zero_file(filepath, file_size_KB):
 
 def make_device_node(
     filename="test_node",
-    node_size_KB=200
+    node_size_KB=100
 ):
     """
     Create a fake device node of size node_size_KB at the given filename

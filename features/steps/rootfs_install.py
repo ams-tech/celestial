@@ -1,5 +1,7 @@
 from behave import *
 import utils
+import subprocess
+import filecmp
 
 
 @given(u'an ext4 formatted file')
@@ -15,12 +17,12 @@ def step_impl(context):
 
 @when(u'we invoke rootfs device node update')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: When we invoke rootfs device node update')
+    pass
 
 
 @then(u'the ext4 file is burned into the target device node')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: Then the ext4 file is burned into the target device node')
+    assert filecmp.cmp(context.ext4_file, context.device_node)
 
 
 @given(u'a non-ext4 formatted file')
