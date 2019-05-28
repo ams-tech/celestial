@@ -5,7 +5,7 @@ import utils
 @given(u'an ext4 formatted file')
 def step_impl(context):
     # Generate a small ext4 formatted file
-    context.ext4_filename = utils.make_ext4()
+    context.ext4_file = utils.make_ext4()
 
 
 @given(u'a target device node')
