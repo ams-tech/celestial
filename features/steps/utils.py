@@ -40,5 +40,5 @@ def make_ext4(
         'mkfs.ext4',
         filepath,
         ])
-    print(retval)
     assert retval.returncode == 0
+    return filepath
