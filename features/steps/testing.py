@@ -1,16 +1,16 @@
 from behave import *
 
 
-@given("x")
+@given("we run behave")
 def step_impl(context):
     pass
 
 
-@when("x")
+@when("we have a passing test case")
 def step_impl(context):
-    pass
+    assert True is not False
 
 
-@then("x")
+@then("behave will pass the test case")
 def step_impl(context):
-    pass
+    assert context.failed is False
