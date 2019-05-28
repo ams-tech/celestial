@@ -1,36 +1,44 @@
 import os 
 import subprocess
 import shutil
+from behave import fixture
 
 
 LOCAL_DIR = os.path.dirname(os.path.realpath(__file__))
 TEMP_DIRECTORY = os.path.join(LOCAL_DIR, "..", "..", ".tmp")
 
 
-def set_up():
+def set_up(context):
     os.makedirs(TEMP_DIRECTORY, exist_ok=True)
 
 
-def tear_down():
+def tear_down(context):
     shutil.rmtree(TEMP_DIRECTORY)
 
 
 def make_ext4(
         filename="test.ext4",
-        fs_size_KB=10,
-        random_file_size_KB=1
+        fs_size_KB=100
         ):
     """
     Creates a file with an ext4 partition of size fs_size
-    with a random file of size random_file_size on the filesystem.
     """
     filepath = os.path.join(TEMP_DIRECTORY, filename)
     assert not os.path.isfile(filepath)
+    # Create a file of size fs_size_KB
     retval = subprocess.run([
         'dd',
         "if=/dev/zero",
-        "of='{}'".format(filepath),
+        "of={}".format(filepath),
         "bs=1K",
         "count={}".format(fs_size_KB)
         ])
-    print("RETVAL: {}".format(retval))
+    assert retval.returncode == 0
+    subprocess.run(['sync'])
+    # Write an ext4 filesystem to that file
+    retval = subprocess.run([
+        'mkfs.ext4',
+        filepath,
+        ])
+    print(retval)
+    assert retval.returncode == 0
