@@ -10,7 +10,7 @@ def step_impl(context):
 
 @given(u'a target device node')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: Given a target device node')
+    context.device_node = utils.make_device_node()
 
 
 @when(u'we invoke rootfs device node update')
