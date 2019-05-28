@@ -12,17 +12,17 @@ def step_impl(context):
 
 @given(u'a target device node')
 def step_impl(context):
-    context.device_node = utils.make_device_node()
+    context.target_device_node = utils.make_device_node()
 
 
 @when(u'we invoke celestial_rootfs_install')
 def step_impl(context):
-    pass
+    raise NotImplementedError(u'STEP: When we invoke celestial_rootfs_install')
 
 
 @then(u'the ext4 file is burned into the target device node')
 def step_impl(context):
-    assert filecmp.cmp(context.ext4_file, context.device_node)
+    assert filecmp.cmp(context.ext4_file, context.target_device_node)
 
 
 @given(u'a non-ext4 formatted file')
