@@ -8,11 +8,11 @@ LOCAL_DIR = os.path.dirname(os.path.realpath(__file__))
 TEMP_DIRECTORY = os.path.join(LOCAL_DIR, "..", "..", ".tmp")
 
 
-def set_up(context):
+def set_up():
     os.makedirs(TEMP_DIRECTORY, exist_ok=True)
 
 
-def tear_down(context):
+def tear_down():
     shutil.rmtree(TEMP_DIRECTORY)
 
 
