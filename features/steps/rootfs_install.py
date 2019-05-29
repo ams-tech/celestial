@@ -4,10 +4,10 @@ import filecmp
 import celestial
 
 
-@given(u'an ext4 formatted file')
+@given(u'an ext3 formatted file')
 def step_impl(context):
     # Generate a small ext4 formatted file
-    context.ext4_file = utils.make_ext4()
+    context.ext3_file = utils.make_ext3()
 
 
 @given(u'a target device node')
@@ -18,22 +18,31 @@ def step_impl(context):
 
 @when(u'we invoke celestial_rootfs_install')
 def step_impl(context):
-    celestial.client.rootfs_install(
-        rootfs_file=context.ext4_file,
-        device_node=context.target_device_node
-        )
+    if not hasattr(context, 'target_device_node'):
+        node = '/dev/null'
+    else:
+        node = context.target_device_node
+    try:
+        context.celestial_rootfs_install_result = celestial.client.rootfs_install(
+            rootfs_file=context.ext3_file,
+            device_node=node
+            )
+    except ValueError as e:
+        context.celestial_rootfs_install_result = e
 
 
-@then(u'the ext4 file is burned into the target device node')
+@then(u'the ext3 file is burned into the target device node')
 def step_impl(context):
-    assert filecmp.cmp(context.ext4_file, context.target_device_node)
+    assert context.celestial_rootfs_install_result.returncode == 0
+    assert filecmp.cmp(context.ext3_file, context.target_device_node)
 
 
-@given(u'a non-ext4 formatted file')
+@given(u'a non-ext3 formatted file')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: Given a non-ext4 formatted file')
+    context.ext3_file = utils.make_non_ext4()
 
 
-@then(u'the update fails')
-def step_impl(context):
-    raise NotImplementedError(u'STEP: Then the update fails')
+@then(u'{name} fails with {exception}')
+def step_impl(context, name, exception):
+    result = getattr(context, "{}_result".format(name))
+    assert isinstance(result, eval(exception))

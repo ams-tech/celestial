@@ -1,8 +1,16 @@
-# Wrappers for the Cestial client scripts
+# Wrappers for the Celestial client scripts
 import subprocess
 
 
-def rootfs_install(rootfs_file, device_node, block_size_KB=10):
+def get_fs_type(path):
+    """
+    Attempt to determine the filesystem type of path
+    :param path:
+    :return: a string with the filesystem name, else None
+    """
+
+
+def rootfs_install(rootfs_file, device_node, block_size_kb=10):
     """
     Install rootfs_file into device_node
     """
@@ -10,6 +18,6 @@ def rootfs_install(rootfs_file, device_node, block_size_KB=10):
         'dd',
         'if={}'.format(rootfs_file),
         'of={}'.format(device_node),
-        'bs={}K'.format(block_size_KB)
+        'bs={}K'.format(block_size_kb)
     ])
-    assert result.returncode == 0
+    return result
