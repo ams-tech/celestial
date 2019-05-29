@@ -1,4 +1,4 @@
-import steps.utils as utils
+import utils as utils
 
 
 def before_scenario(context, scenario):

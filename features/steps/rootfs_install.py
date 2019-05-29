@@ -2,6 +2,7 @@ from behave import *
 import utils
 import subprocess
 import filecmp
+import celestial_client
 
 
 @given(u'an ext4 formatted file')
@@ -17,7 +18,10 @@ def step_impl(context):
 
 @when(u'we invoke celestial_rootfs_install')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: When we invoke celestial_rootfs_install')
+    celestial_client.rootfs_install(
+        rootfs_file=context.ext4_file,
+        device_node=context.target_device_node
+        )
 
 
 @then(u'the ext4 file is burned into the target device node')
