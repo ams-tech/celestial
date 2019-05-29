@@ -44,27 +44,51 @@ def make_device_node(
     return filepath
 
 
-def make_ext2(
-    filename="test_non_ext4.ext4",
-    fs_size_kb=100
-):
+def make_ext(revision, filepath, fs_size_kb):
     """
-    create a non ext4 file.  consider passing types to this
+    Create an ext 2,3, or 4 fs
+    :param revision:
+    :param filepath:
+    :param fs_size_kb:
     :return:
     """
-    filepath = os.path.join(TEMP_DIRECTORY, filename)
+    if revision not in [2, 3, 4]:
+        raise ValueError("Unsupported ext format")
     # Zero out the file
     make_zero_file(filepath, fs_size_kb)
     # Write an ext4 filesystem to that file
     retval = subprocess.run([
-        'mkfs.ext2',
+        'mkfs.ext{}'.format(revision),
         filepath,
     ])
     assert retval.returncode == 0
     return filepath
 
 
+def make_ext2(
+    filename="test_ext2.ext2",
+    fs_size_kb=100
+):
+    """
+    Creates a file with an ext3 partition of size fs_size
+    :return:
+    """
+    filepath = os.path.join(TEMP_DIRECTORY, filename)
+    return make_ext(2, filepath, fs_size_kb)
+
+
 def make_ext3(
+    filename="test_ext3.ext3",
+    fs_size_kb=100
+):
+    """
+    Creates a file with an ext3 partition of size fs_size
+    """
+    filepath = os.path.join(TEMP_DIRECTORY, filename)
+    return make_ext(3, filepath, fs_size_kb)
+
+
+def make_ext4(
     filename="test_ext4.ext4",
     fs_size_kb=100
 ):
@@ -72,12 +96,4 @@ def make_ext3(
     Creates a file with an ext4 partition of size fs_size
     """
     filepath = os.path.join(TEMP_DIRECTORY, filename)
-    # Zero out the file
-    make_zero_file(filepath, fs_size_kb)
-    # Write an ext4 filesystem to that file
-    retval = subprocess.run([
-        'mkfs.ext3',
-        filepath,
-        ])
-    assert retval.returncode == 0
-    return filepath
+    return make_ext(4, filepath, fs_size_kb)

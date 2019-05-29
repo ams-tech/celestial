@@ -7,10 +7,12 @@ import celestial
 @given('{rootfs_format} formatted rootfs file')
 def step_impl(context, rootfs_format):
     # Generate a small ext3 formatted file
-    if rootfs_format == "an ext3":
-        context.rootfs_file = utils.make_ext3()
-    elif rootfs_format == "an ext2":
+    if rootfs_format == "an ext2":
         context.rootfs_file = utils.make_ext2()
+    elif rootfs_format == "an ext3":
+        context.rootfs_file = utils.make_ext3()
+    elif rootfs_format == "an ext4":
+        context.rootfs_file = utils.make_ext4()
     else:
         raise ValueError("Unsupported rootfs type")
 
