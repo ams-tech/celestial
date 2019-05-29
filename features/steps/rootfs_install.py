@@ -4,12 +4,12 @@ import filecmp
 import celestial
 
 
-@given('an {rootfs_format} formatted rootfs file')
+@given('{rootfs_format} formatted rootfs file')
 def step_impl(context, rootfs_format):
     # Generate a small ext3 formatted file
-    if rootfs_format == "ext3":
+    if rootfs_format == "an ext3":
         context.rootfs_file = utils.make_ext3()
-    elif rootfs_format == "ext2":
+    elif rootfs_format == "an ext2":
         context.rootfs_file = utils.make_ext2()
     else:
         raise ValueError("Unsupported rootfs type")
@@ -21,17 +21,26 @@ def step_impl(context):
     context.target_device_node = utils.make_device_node()
 
 
-@when(u'we invoke celestial_rootfs_install with expected filesystem {fs_type}')
-def step_impl(context, fs_type):
+@given(u'we expect rootfs format {rootfs_format}')
+def step_impl(context, rootfs_format):
+    context.expected_rootfs_format = rootfs_format
+
+
+@when(u'we invoke celestial_rootfs_install')
+def step_impl(context):
     if not hasattr(context, 'target_device_node'):
         node = '/dev/null'
     else:
         node = context.target_device_node
+    if not hasattr(context, 'expected_rootfs_format'):
+        expected_rootfs_format = None
+    else:
+        expected_rootfs_format = context.expected_rootfs_format
     try:
         context.celestial_rootfs_install_result = celestial.client.rootfs_install(
             rootfs_file=context.rootfs_file,
             device_node=node,
-            expected_fs=fs_type
+            expected_fs=expected_rootfs_format
             )
     except ValueError as e:
         context.celestial_rootfs_install_result = e
@@ -41,11 +50,6 @@ def step_impl(context, fs_type):
 def step_impl(context):
     assert context.celestial_rootfs_install_result.returncode == 0
     assert filecmp.cmp(context.rootfs_file, context.target_device_node)
-
-
-@given(u'a non-ext3 formatted rootfs file')
-def step_impl(context):
-    context.rootfs_file = utils.make_ext2()
 
 
 @then(u'{name} fails with {exception}')
