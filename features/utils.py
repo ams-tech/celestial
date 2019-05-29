@@ -44,7 +44,7 @@ def make_device_node(
     return filepath
 
 
-def make_non_ext4(
+def make_ext2(
     filename="test_non_ext4.ext4",
     fs_size_kb=100
 ):
@@ -76,7 +76,7 @@ def make_ext3(
     make_zero_file(filepath, fs_size_kb)
     # Write an ext4 filesystem to that file
     retval = subprocess.run([
-        'mkfs.ext4',
+        'mkfs.ext3',
         filepath,
         ])
     assert retval.returncode == 0
