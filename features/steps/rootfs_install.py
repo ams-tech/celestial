@@ -1,6 +1,5 @@
 from behave import *
 import utils
-import subprocess
 import filecmp
 import celestial
 
@@ -13,6 +12,7 @@ def step_impl(context):
 
 @given(u'a target device node')
 def step_impl(context):
+    # Generate a device node, the same size as the ext4_file above
     context.target_device_node = utils.make_device_node()
 
 
