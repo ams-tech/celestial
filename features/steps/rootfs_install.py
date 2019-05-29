@@ -4,14 +4,14 @@ import filecmp
 import celestial
 
 
-@given('{rootfs_format} formatted rootfs file')
+@given('a rootfs file formatted with {rootfs_format}')
 def step_impl(context, rootfs_format):
     # Generate a small ext3 formatted file
-    if rootfs_format == "an ext2":
+    if rootfs_format == "ext2":
         context.rootfs_file = utils.make_ext2()
-    elif rootfs_format == "an ext3":
+    elif rootfs_format == "ext3":
         context.rootfs_file = utils.make_ext3()
-    elif rootfs_format == "an ext4":
+    elif rootfs_format == "ext4":
         context.rootfs_file = utils.make_ext4()
     else:
         raise ValueError("Unsupported rootfs type")
@@ -48,7 +48,7 @@ def step_impl(context):
         context.celestial_rootfs_install_result = e
 
 
-@then(u'the ext3 file is burned into the target device node')
+@then(u'the rootfs file is burned into the target device node')
 def step_impl(context):
     assert context.celestial_rootfs_install_result.returncode == 0
     assert filecmp.cmp(context.rootfs_file, context.target_device_node)
