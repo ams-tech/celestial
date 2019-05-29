@@ -4,22 +4,32 @@ import os
 
 
 class Filesystems:
+    EXT2 = "ext2"
+    EXT3 = "ext3"
     EXT4 = "ext4"
     NONE = None
 
 
-def get_fs_type(path):
+def get_fs_types(path):
     """
-    Attempt to determine the filesystem type of path
+    Fetch a list of possible filesystem types
     :param path:
-    :return: a string with the filesystem name, else None
+    :return: a list of strings with the possible filesystem type, else None
     """
     if not os.path.exists(path):
         return None
-    return subprocess.check_output(
+    output = subprocess.check_output(
         ['''(eval $(blkid {} | awk ' {{ print $3 }} '); echo $TYPE)'''.format(path)],
         shell=True,
         executable='/bin/bash').decode().rstrip()
+    if output == "":
+        retval = []
+    elif output == Filesystems.EXT2:
+        # ext3 filesystems misidentify as ext2.  Consider both as possible outputs
+        retval = [Filesystems.EXT2, Filesystems.EXT3]
+    else:
+        retval = [output]
+    return retval
 
 
 def rootfs_install(rootfs_file, device_node, block_size_kb=10, expected_fs=Filesystems.NONE):
@@ -27,8 +37,8 @@ def rootfs_install(rootfs_file, device_node, block_size_kb=10, expected_fs=Files
     Install rootfs_file into device_node
     """
     if expected_fs is not None:
-        fs_type = get_fs_type(rootfs_file)
-        if fs_type != expected_fs:
+        fs_types = get_fs_types(rootfs_file)
+        if expected_fs not in fs_types:
             raise ValueError("rootfs_file is type {}, expected {}".format(rootfs_file, expected_fs))
     result = subprocess.run([
         'dd',

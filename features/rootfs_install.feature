@@ -14,8 +14,16 @@ Feature: celestial_rootfs_install
         | ext4          |
 
 
-    Scenario: faults when given an improperly formatted file
-        Given a rootfs file formatted with ext2
-        And we expect rootfs format ext4
+    Scenario Outline: faults when given an improperly formatted file
+        Given a rootfs file formatted with <rootfs_format>
+        And we expect rootfs format <expected_rootfs_format>
         When we invoke celestial_rootfs_install
         Then celestial_rootfs_install fails with ValueError
+
+        Examples: Mismatched Filesystems
+        # Since ext2 and ext3 formatted filesystems identify as ext2, we can't test for that fault
+        | rootfs_format     | expected_rootfs_format    |
+        | ext2              | ext4                      |
+        | ext3              | ext4                      |
+        | ext4              | ext2                      |
+        | ext4              | ext3                      |
