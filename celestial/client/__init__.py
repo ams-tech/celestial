@@ -16,13 +16,20 @@ def get_fs_type(path):
     """
     if not os.path.exists(path):
         return None
-    return subprocess.check_output('''(eval $(blkid {} | awk ' {{ print $3 }} '); echo $TYPE)'''.format(path)).rstrip()
+    return subprocess.check_output(
+        ['''(eval $(blkid {} | awk ' {{ print $3 }} '); echo $TYPE)'''.format(path)],
+        shell=True,
+        executable='/bin/bash').decode().rstrip()
 
 
-def rootfs_install(rootfs_file, device_node, block_size_kb=10, expected_fs=None):
+def rootfs_install(rootfs_file, device_node, block_size_kb=10, expected_fs=Filesystems.NONE):
     """
     Install rootfs_file into device_node
     """
+    if expected_fs is not None:
+        fs_type = get_fs_type(rootfs_file)
+        if fs_type != expected_fs:
+            raise ValueError("rootfs_file is type {}, expected {}".format(rootfs_file, expected_fs))
     result = subprocess.run([
         'dd',
         'if={}'.format(rootfs_file),
