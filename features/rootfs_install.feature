@@ -1,4 +1,4 @@
-Feature: celestial_rootfs_install
+Feature: rootfs_install
 
     Scenario Outline: update rootfs device node with expected fs format
         Given a rootfs file formatted with <expected_fs>
