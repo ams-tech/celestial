@@ -1,4 +1,6 @@
 from behave import *
+
+import celestial.client.rootfs
 import utils
 import filecmp
 import celestial
@@ -39,7 +41,7 @@ def step_impl(context):
     else:
         expected_rootfs_format = context.expected_rootfs_format
     try:
-        context.celestial_rootfs_install_result = celestial.client.rootfs_install(
+        context.celestial_rootfs_install_result = celestial.client.rootfs.rootfs_install(
             rootfs_file=context.rootfs_file,
             device_node=node,
             expected_fs=expected_rootfs_format
