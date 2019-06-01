@@ -14,5 +14,5 @@ def step_impl(context, subtype, filename):
     :type context: behave.runner.Context
     """
     file = os.path.join(STEPS_DIRECTORY, "..", "samples", context.feature.name, subtype, filename)
-    tmp_file = utils.copy_file_to_temp(file)
+    tmp_file = utils.copy_file_to_temp(file, target_subpath=os.path.join(context.feature.name, subtype))
     setattr(context, "sample_{}_file".format(subtype), tmp_file)

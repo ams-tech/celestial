@@ -16,17 +16,19 @@ def tear_down():
     shutil.rmtree(TEMP_DIRECTORY)
 
 
-def copy_file_to_temp(path):
+def copy_file_to_temp(path, target_subpath=""):
     """
     Copy the file at "path" to TEMP_DIRECTORY
     :param path:
+    :param target_subpath: Add folders between TEMP_DIRECTORY and the copied file
     :return: the path of the new file
     """
     filename = os.path.basename(path)
-    target_path = os.path.join(TEMP_DIRECTORY, filename)
+    target_dir = os.path.join(TEMP_DIRECTORY, target_subpath)
+    os.makedirs(target_dir, exist_ok=True)
+    target_path = os.path.join(target_dir, filename)
     shutil.copyfile(path, target_path)
     return target_path
-
 
 def make_zero_file(filepath, file_size_kb):
     """
