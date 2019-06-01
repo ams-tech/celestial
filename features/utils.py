@@ -30,6 +30,7 @@ def copy_file_to_temp(path, target_subpath=""):
     shutil.copyfile(path, target_path)
     return target_path
 
+
 def make_zero_file(filepath, file_size_kb):
     """
     Create a zeroed out file of size file_size_KB at filepath
