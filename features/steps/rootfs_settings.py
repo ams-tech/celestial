@@ -2,6 +2,16 @@ from behave import *
 import celestial
 
 
+@given("we want to boot with the rootfs at {new_rootfs_device}")
+def step_impl(context, new_rootfs_device):
+    context.new_rootfs_device = new_rootfs_device
+
+
+@when("we update the boot rootfs device in the cmdline file")
+def step_impl(context):
+    pass
+
+
 @when("we query the boot rootfs device")
 def step_impl(context):
     """

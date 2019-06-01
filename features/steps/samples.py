@@ -1,5 +1,6 @@
 from behave import *
 import os
+from features import utils
 
 STEPS_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
 
@@ -12,6 +13,6 @@ def step_impl(context, subtype, filename):
     :param subtype:
     :type context: behave.runner.Context
     """
-    setattr(context,
-            "sample_{}_file".format(subtype),
-            os.path.join(STEPS_DIRECTORY, "..", "samples", context.feature.name, subtype, filename))
+    file = os.path.join(STEPS_DIRECTORY, "..", "samples", context.feature.name, subtype, filename)
+    tmp_file = utils.copy_file_to_temp(file)
+    setattr(context, "sample_{}_file".format(subtype), tmp_file)

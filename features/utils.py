@@ -16,6 +16,18 @@ def tear_down():
     shutil.rmtree(TEMP_DIRECTORY)
 
 
+def copy_file_to_temp(path):
+    """
+    Copy the file at "path" to TEMP_DIRECTORY
+    :param path:
+    :return: the path of the new file
+    """
+    filename = os.path.basename(path)
+    target_path = os.path.join(TEMP_DIRECTORY, filename)
+    shutil.copyfile(path, target_path)
+    return target_path
+
+
 def make_zero_file(filepath, file_size_kb):
     """
     Create a zeroed out file of size file_size_KB at filepath
