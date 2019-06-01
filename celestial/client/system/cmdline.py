@@ -16,6 +16,23 @@ def load(cmdline_file):
     return contents
 
 
+def write(parameters, cmdline_file):
+    """
+    Create a cmdline file with the provided parameters
+    Overwrite it if it exists
+    :param parameters:
+    :param cmdline_file:
+    :return:
+    """
+    data = ""
+    for key in parameters:
+        if len(data) != 0:
+            data += " "
+        data += "{}={}".format(key, parameters[key])
+    with open(cmdline_file, 'w') as fpt:
+        fpt.write(data)
+
+
 def get_parameters(cmdline_file):
     """
     Retrieve all of the parameters of the cmdline file
@@ -41,7 +58,7 @@ def get_parameter(parameter_name, cmdline_file):
     """
     parameters = get_parameters(cmdline_file)
     if "root" in parameters:
-        return parameters["root"]
+        return parameters[parameter_name]
     return None
 
 
@@ -54,4 +71,6 @@ def set_parameter(parameter_name, parameter_value, cmdline_file):
     :param cmdline_file:
     :return:
     """
-    contents = load(cmdline_file)
+    parameters = get_parameters(cmdline_file)
+    parameters[parameter_name] = parameter_value
+    write(parameters, cmdline_file)

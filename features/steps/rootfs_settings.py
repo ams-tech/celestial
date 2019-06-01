@@ -10,6 +10,7 @@ def step_impl(context, new_rootfs_device):
 @when("we update the boot rootfs device in the cmdline file")
 def step_impl(context):
     celestial.client.rootfs.set_boot_device(
+        context.new_rootfs_device,
         cmdline_file=context.sample_cmdline_file
     )
 

@@ -60,4 +60,4 @@ def set_boot_device(boot_device, cmdline_file="/boot/cmdline"):
     :param cmdline_file:  The location of the boot partition's commandline file
     :return:
     """
-    pass
+    cmdline.set_parameter("root", boot_device, cmdline_file)
