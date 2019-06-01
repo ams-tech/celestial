@@ -42,7 +42,7 @@ def step_impl(context):
     else:
         expected_rootfs_format = context.expected_rootfs_format
     try:
-        context.celestial_rootfs_install_result = celestial.client.rootfs.rootfs_install(
+        context.celestial_rootfs_install_result = celestial.client.rootfs.install(
             rootfs_file=context.rootfs_file,
             device_node=node,
             expected_fs=expected_rootfs_format

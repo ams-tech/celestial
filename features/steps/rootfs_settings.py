@@ -1,4 +1,5 @@
 from behave import *
+import celestial
 
 
 @when("we query the boot rootfs device")
@@ -6,7 +7,9 @@ def step_impl(context):
     """
     :type context: behave.runner.Context
     """
-    raise NotImplementedError(u'STEP: When we query the boot rootfs device')
+    context.boot_rootfs_device_result = celestial.client.rootfs.get_boot_device(
+        cmdline_file=context.sample_cmdline_file
+    )
 
 
 @then("the reported boot rootfs device is {expected_result}")

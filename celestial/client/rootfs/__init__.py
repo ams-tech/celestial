@@ -26,7 +26,7 @@ def get_fs_types(path):
     return retval
 
 
-def rootfs_install(rootfs_file, device_node, block_size_kb=10, expected_fs=Filesystems.NONE):
+def install(rootfs_file, device_node, block_size_kb=10, expected_fs=Filesystems.NONE):
     """
     Install rootfs_file into device_node
     """
@@ -41,3 +41,21 @@ def rootfs_install(rootfs_file, device_node, block_size_kb=10, expected_fs=Files
         'bs={}K'.format(block_size_kb)
     ])
     return result
+
+
+def get_boot_device(cmdline_file="/proc/cmdline"):
+    """
+    Retrieve the "root" parameter of "/proc/cmdline"
+    :param cmdline_file: The location of the "cmdline" file.
+    :return:
+    """
+    contents = ""
+    with open(cmdline_file, 'r') as fpt:
+        for l in fpt.readlines():
+            contents += l
+    entries = contents.split(" ")
+    for e in entries:
+        kvp = e.split("=")
+        if kvp[0] == "root":
+            return kvp[1]
+    return None
