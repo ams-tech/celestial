@@ -1,7 +1,7 @@
 from behave import *
 
 import celestial.client.rootfs
-import utils
+from features import utils
 import filecmp
 import celestial
 from celestial.strings import Filesystems
