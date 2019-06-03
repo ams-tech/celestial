@@ -1,4 +1,4 @@
-import utils as utils
+import features.utils as utils
 
 
 def before_scenario(context, scenario):
