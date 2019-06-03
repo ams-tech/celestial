@@ -21,7 +21,7 @@ Feature: rootfs_install
     Then celestial_rootfs_install fails with ValueError
 
     Examples: Mismatched Filesystems
-        # Since ext2 and ext3 formatted filesystems identify as ext2, we can't test for that fault
+      # Since ext2 and ext3 formatted filesystems identify as ext2, we can't test for that fault
       | rootfs_format     | expected_rootfs_format    |
       | ext2              | ext4                      |
       | ext3              | ext4                      |
