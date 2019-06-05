@@ -10,6 +10,7 @@ from celestial.strings import Filesystems
 @given(u'a rootfs file formatted with {rootfs_format}')
 def step_impl(context, rootfs_format):
     # Generate a small ext3 formatted file
+    context.rootfs_format = rootfs_format
     if rootfs_format == Filesystems.EXT2:
         context.rootfs_file = utils.make_ext2()
     elif rootfs_format == Filesystems.EXT3:
@@ -55,7 +56,6 @@ def step_impl(context):
 def step_impl(context, expected_device_node):
     if expected_device_node == "the target device node":
         expected_device_node = context.rootfs_file
-    assert context.celestial_rootfs_install_result.returncode == 0
     assert filecmp.cmp(expected_device_node, context.target_device_node)
 
 
