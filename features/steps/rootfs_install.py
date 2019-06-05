@@ -51,10 +51,12 @@ def step_impl(context):
         context.celestial_rootfs_install_result = e
 
 
-@then(u'the rootfs file is burned into the target device node')
-def step_impl(context):
+@then("the rootfs file is burned into {expected_device_node}")
+def step_impl(context, expected_device_node):
+    if expected_device_node == "the target device node":
+        expected_device_node = context.rootfs_file
     assert context.celestial_rootfs_install_result.returncode == 0
-    assert filecmp.cmp(context.rootfs_file, context.target_device_node)
+    assert filecmp.cmp(expected_device_node, context.target_device_node)
 
 
 @then(u'{name} fails with {exception}')

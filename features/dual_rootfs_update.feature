@@ -10,8 +10,8 @@ Feature: dual_rootfs_update
     When we update the dual boot rootfs
     And we query the boot rootfs device
     Then the rootfs file is burned into <expected_device_node>
-    And the reported boot rootfs device is <new_rootfs_device>
+    And the reported boot rootfs device is <expected_device_node>
 
     Examples:
-    | given_fs | sample_filename | dev1      | dev2      | expected_device_node  | new_rootfs_device |
-
+    | given_fs | sample_filename | dev1           | dev2           | expected_device_node  |
+    | ext3     | mmcblk0p1       | /dev/mmcblk0p1 | /dev/mmcblk0p2 | /dev/mmcblk0p2        |
