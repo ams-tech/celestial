@@ -14,9 +14,11 @@ Feature: dual_rootfs_update
     And the reported boot rootfs device is <expected_device_node>
 
     Examples:
-    | given_fs | sample_filename | boot_device_node | dev1      | dev2      | expected_device_node |
-    | ext3     | mmcblk0p1       | mmcblk0p1        | mmcblk0p1 | mmcblk0p2 | mmcblk0p2            |
-    | ext4     | mmcblk0p2       | mmcblk0p2        | mmcblk0p1 | mmcblk0p2 | mmcblk0p1            |
+    | given_fs | sample_filename    | boot_device_node | dev1      | dev2      | expected_device_node |
+    | ext3     | mmcblk0p1          | mmcblk0p1        | mmcblk0p1 | mmcblk0p2 | mmcblk0p2            |
+    | ext4     | mmcblk0p2          | mmcblk0p2        | mmcblk0p1 | mmcblk0p2 | mmcblk0p1            |
+    | ext4     | root_defined_first | mmcblk0p2        | mmcblk0p1 | mmcblk0p2 | mmcblk0p1            |
+    | ext2     | root_defined_last  | mmcblk0p1        | mmcblk0p1 | mmcblk0p2 | mmcblk0p2            |
 
   Scenario: invalid boot device node fails
     Given a rootfs file formatted with ext3
