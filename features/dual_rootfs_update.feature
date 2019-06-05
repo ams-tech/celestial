@@ -16,3 +16,20 @@ Feature: dual_rootfs_update
     Examples:
     | given_fs | sample_filename | boot_device_node | dev1      | dev2      | expected_device_node |
     | ext3     | mmcblk0p1       | mmcblk0p1        | mmcblk0p1 | mmcblk0p2 | mmcblk0p2            |
+    | ext4     | mmcblk0p2       | mmcblk0p2        | mmcblk0p1 | mmcblk0p2 | mmcblk0p1            |
+
+  Scenario: invalid boot device node fails
+    Given a rootfs file formatted with ext3
+    And the sample cmdline file mmcblk0p1
+    And the boot rootfs device is set to mmcblk2p2
+    And the rootfs device nodes are named mmcblk0p1 and mmcblk0p2
+    When we update the dual boot rootfs
+    Then dual_boot_update fails with ValueError
+
+  Scenario: identical boot devices fails
+    Given a rootfs file formatted with ext3
+    And the sample cmdline file mmcblk0p1
+    And the boot rootfs device is set to mmcblk0p1
+    And the rootfs device nodes are named mmcblk0p1 and mmcblk0p1
+    When we update the dual boot rootfs
+    Then dual_boot_update fails with ValueError

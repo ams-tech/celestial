@@ -75,6 +75,8 @@ def dual_boot_update(rootfs_file, dev_1, dev_2, cmdline_file="/boot/cmdline", ex
     :param dev_2: the second rootfs device node in the dual-boot configuration
     :return:
     """
+    if dev_1 == dev_2:
+        raise ValueError("Boot devices cannot be identical")
     current_boot_dev = get_boot_device(cmdline_file=cmdline_file)
     if current_boot_dev == dev_1:
         target_boot_dev = dev_2
@@ -83,7 +85,6 @@ def dual_boot_update(rootfs_file, dev_1, dev_2, cmdline_file="/boot/cmdline", ex
     else:
         raise ValueError("current rootfs '{}' does not match dev_1 or dev_2".format(current_boot_dev))
 
-    result = install(rootfs_file, target_boot_dev, expected_fs=expected_rootfs_format)
-
+    install(rootfs_file, target_boot_dev, expected_fs=expected_rootfs_format)
 
     set_boot_device(target_boot_dev, cmdline_file=cmdline_file)

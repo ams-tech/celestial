@@ -13,7 +13,10 @@ def step_impl(context, dev1, dev2):
     :type dev2: str
     """
     context.rootfs_device_node_1 = utils.make_device_node(dev1)
-    context.rootfs_device_node_2 = utils.make_device_node(dev2)
+    if dev1 != dev2:
+        context.rootfs_device_node_2 = utils.make_device_node(dev2)
+    else:
+        context.rootfs_device_node_2 = context.rootfs_device_node_1
 
 
 @when("we update the dual boot rootfs")
