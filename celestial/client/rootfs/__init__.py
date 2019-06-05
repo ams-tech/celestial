@@ -41,6 +41,8 @@ def install(rootfs_file, device_node, block_size_kb=10, expected_fs=Filesystems.
         'of={}'.format(device_node),
         'bs={}K'.format(block_size_kb)
     ])
+    if result.returncode != 0:
+        raise RuntimeError("Failed to update {} with {}".format(device_node, rootfs_file))
     return result
 
 
@@ -81,6 +83,7 @@ def dual_boot_update(rootfs_file, dev_1, dev_2, cmdline_file="/boot/cmdline", ex
     else:
         raise ValueError("current rootfs '{}' does not match dev_1 or dev_2".format(current_boot_dev))
 
-    install(rootfs_file, target_boot_dev, expected_fs=expected_rootfs_format)
+    result = install(rootfs_file, target_boot_dev, expected_fs=expected_rootfs_format)
+
 
     set_boot_device(target_boot_dev, cmdline_file=cmdline_file)
