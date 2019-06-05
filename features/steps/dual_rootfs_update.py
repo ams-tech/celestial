@@ -41,6 +41,6 @@ def step_impl(context, boot_device):
     :type boot_device: str
     """
     celestial.client.rootfs.set_boot_device(
-        boot_device,
+        utils.prepend_temp_dir(boot_device),
         cmdline_file=context.sample_cmdline_file
     )

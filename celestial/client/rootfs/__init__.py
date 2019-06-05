@@ -63,14 +63,24 @@ def set_boot_device(boot_device, cmdline_file="/boot/cmdline"):
     cmdline.set_parameter("root", boot_device, cmdline_file)
 
 
-def dual_boot_update(rootfs_file,  dev_1, dev_2, cmdline_file="/boot/cmdline", expected_rootfs_format=None):
+def dual_boot_update(rootfs_file, dev_1, dev_2, cmdline_file="/boot/cmdline", expected_rootfs_format=None):
     """
 
     :param rootfs_file: The filesystem to be installed
     :param expected_rootfs_format: The expected rootfs format
     :param cmdline_file: The location of the boot partition's commandline file
-    :param dev_1:
-    :param dev_2:
+    :param dev_1: the first rootfs device node in the dual-boot configuration
+    :param dev_2: the second rootfs device node in the dual-boot configuration
     :return:
     """
-    return None
+    current_boot_dev = get_boot_device(cmdline_file=cmdline_file)
+    if current_boot_dev == dev_1:
+        target_boot_dev = dev_2
+    elif current_boot_dev == dev_2:
+        target_boot_dev = dev_1
+    else:
+        raise ValueError("current rootfs '{}' does not match dev_1 or dev_2".format(current_boot_dev))
+
+    install(rootfs_file, target_boot_dev, expected_fs=expected_rootfs_format)
+
+    set_boot_device(target_boot_dev, cmdline_file=cmdline_file)
