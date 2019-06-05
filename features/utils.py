@@ -112,3 +112,7 @@ def make_ext4(
     """
     filepath = os.path.join(TEMP_DIRECTORY, filename)
     return make_ext(4, filepath, fs_size_kb)
+
+
+def prepend_temp_dir(expected_device_node):
+    return os.path.join(TEMP_DIRECTORY, expected_device_node)

@@ -32,3 +32,12 @@ def step_impl(context, expected_result):
     :type context: behave.runner.Context
     """
     assert context.boot_rootfs_device_result == expected_result
+
+
+@step("the the boot rootfs device is set to {sample_filename}")
+def step_impl(context, sample_filename):
+    """
+    :type context: behave.runner.Context
+    :type sample_filename: str
+    """
+    raise NotImplementedError(u'STEP: And the the boot rootfs device is set to <sample_filename>')

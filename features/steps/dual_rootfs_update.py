@@ -32,3 +32,15 @@ def step_impl(context):
     except ValueError as e:
         context.dual_boot_update_result = e
 
+
+@step("the boot rootfs device is set to (?P<boot_device>.+)")
+def step_impl(context, boot_device):
+    """
+    Set the boot device in the cmdline file
+    :type context: behave.runner.Context
+    :type boot_device: str
+    """
+    celestial.client.rootfs.set_boot_device(
+        boot_device,
+        cmdline_file=context.sample_cmdline_file
+    )
