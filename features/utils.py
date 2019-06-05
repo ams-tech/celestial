@@ -1,7 +1,6 @@
 import os
 import subprocess
 import shutil
-from behave import fixture
 
 
 LOCAL_DIR = os.path.dirname(os.path.realpath(__file__))
