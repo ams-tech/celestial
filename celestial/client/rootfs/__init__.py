@@ -61,3 +61,16 @@ def set_boot_device(boot_device, cmdline_file="/boot/cmdline"):
     :return:
     """
     cmdline.set_parameter("root", boot_device, cmdline_file)
+
+
+def dual_boot_update(rootfs_file,  dev_1, dev_2, cmdline_file="/boot/cmdline", expected_rootfs_format=None):
+    """
+
+    :param rootfs_file: The filesystem to be installed
+    :param expected_rootfs_format: The expected rootfs format
+    :param cmdline_file: The location of the boot partition's commandline file
+    :param dev_1:
+    :param dev_2:
+    :return:
+    """
+    return None

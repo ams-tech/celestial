@@ -5,6 +5,7 @@ from features import utils
 import filecmp
 import celestial
 from celestial.strings import Filesystems
+import os
 
 
 @given(u'a rootfs file formatted with {rootfs_format}')
@@ -55,8 +56,10 @@ def step_impl(context):
 @then("the rootfs file is burned into {expected_device_node}")
 def step_impl(context, expected_device_node):
     if expected_device_node == "the target device node":
-        expected_device_node = context.rootfs_file
-    assert filecmp.cmp(expected_device_node, context.target_device_node)
+        expected_device_node = context.target_device_node
+    else:
+        expected_device_node = os.path.join(utils.TEMP_DIRECTORY, expected_device_node)
+    assert filecmp.cmp(context.rootfs_file, expected_device_node)
 
 
 @then(u'{name} fails with {exception}')
