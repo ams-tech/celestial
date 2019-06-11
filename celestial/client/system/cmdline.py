@@ -57,7 +57,7 @@ def get_parameter(parameter_name, cmdline_file):
     :return:
     """
     parameters = get_parameters(cmdline_file)
-    if "root" in parameters:
+    if parameter_name in parameters:
         return parameters[parameter_name]
     return None
 
